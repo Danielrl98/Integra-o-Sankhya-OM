@@ -8,7 +8,6 @@ class Api {
         const response = []
         const url = 'https://api.sankhya.com.br/login'
 
-
         const result = await fetch(url, {
             method: "POST",
             mode: "cors",
