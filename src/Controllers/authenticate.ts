@@ -1,14 +1,7 @@
-interface Header{
-    
-        token?:any,
-        appkey?:any,
-        username?:any,
-        password?:any,
-}
 
 class Api {
 
-    bearerToken:string
+    bearerToken
 
     async authenticate(req, res) {
 
@@ -48,4 +41,4 @@ class Api {
         return res.send(response)
     }
 }
-module.exports = { Api } 
+module.exports =  Api  

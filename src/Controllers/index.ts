@@ -1,11 +1,11 @@
-const { Api } = require('./authenticate')
+const Classe  = require('./authenticate.ts')
 
 module.exports = {
 
 
          requestApi(req,res){
 
-            const api = new Api()
+            const api = new Classe()
             api.authenticate(req,res)
 
            /* const t = req.query.t

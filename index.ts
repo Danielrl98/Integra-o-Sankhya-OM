@@ -1,8 +1,8 @@
 require('dotenv').config()
-const { router }  = require('./src/Router/index')
+const app  = require('./src/Router/index.ts')
 
 
 
-router.listen('3030', () => {
+app.listen('3030', () => {
     console.log('http://localhost:3030')
 })
