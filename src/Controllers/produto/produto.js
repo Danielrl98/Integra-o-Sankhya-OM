@@ -2,12 +2,6 @@
 module.exports = {
     requestProduto(req, res) {
 
-        if (!req.query.produto) {
-            res.send([
-                { error: 'produto não retornado' },
-                statusErrorVoid
-            ])
-        }
         const produto = (req.query.produto).replaceAll('%', ' ').toLowerCase()
 
         console.log(produto)

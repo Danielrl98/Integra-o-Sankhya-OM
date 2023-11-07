@@ -1,3 +1,5 @@
+const axios = require('axios')
+
 const url_consulta = "https://api.sankhya.com.br/gateway/v1/mge/service.sbr?serviceName=CRUDServiceProvider.loadRecords&outputType=json";
 
 const url_cadastro = "https://api.sankhya.com.br/gateway/v1/mge/service.sbr?serviceName=CRUDServiceProvider.saveRecord&outputType=json";
@@ -5,21 +7,6 @@ const url_cadastro = "https://api.sankhya.com.br/gateway/v1/mge/service.sbr?serv
 module.exports = {
 
     queryClient(req, res, bearerToken) {
-
-
-        if (!req.query.cpf) {
-            res.send([
-                { error: 'CPF não retornado' },
-                statusErrorVoid
-            ])
-        }
-        if (!req.query.nome) {
-            res.send([
-                { error: 'nome do cliente não retornado' },
-                statusErrorVoid
-            ])
-        }
-
 
         const cpfCliente = req.query.cpf
         const nomeDoCliente = (req.query.nome).replaceAll('%', ' ').toUpperCase()
@@ -52,7 +39,7 @@ module.exports = {
 
         /*   try{*/
 
-        const result = await fetch(url_consulta, {
+       /* const result = await fetch(url_consulta, {
             method: "POST",
             mode: "cors",
             cache: "no-cache",
@@ -66,7 +53,13 @@ module.exports = {
             body: JSON.stringify(body),
         })
 
-        const success = await result.json()
+        const success = await result.json()*/
+
+        axios.defaults.headers.common['Authorization'] = `Bearer ${bearerToken}`
+        
+        const result = await axios.post(url_consulta,body)
+
+        const success =  (result.data)
 
         const total = success.responseBody.entities.total
 
@@ -142,7 +135,7 @@ module.exports = {
             }
         }
 
-        const result = await fetch(url_cadastro, {
+     /*   const result = await fetch(url_cadastro, {
             method: "POST",
             mode: "cors",
             cache: "no-cache",
@@ -156,13 +149,23 @@ module.exports = {
             body: JSON.stringify(body),
         })
 
-        const success = await result.json()
+        const success = await result.json()*/
 
-        const id_client = success.responseBody.entities.entity.CODPARC.$
-        dados.push({ cliente: id_client })
+        try{
+            axios.defaults.headers.common['Authorization'] = `Bearer ${bearerToken}`
+        
+            const result = await axios.post(url_cadastro,body)
+    
+            const success = (result.data)
+          
+            const id_client = success.responseBody.entities.entity.CODPARC.$
+            dados.push({ cliente: id_client})
+
+        } catch(e) {
+            return JSON.stringify({cadastroCliente: JSON.stringify(e)})
+        }
+       
         
     }
-
-
 
 }

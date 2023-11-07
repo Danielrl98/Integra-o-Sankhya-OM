@@ -1,14 +1,6 @@
 module.exports = {
     requestPayment(req,res){
 
-        
-        if (!req.query.pagamento) {
-            res.send([
-                { error: 'Forma de pagamento não retornada' },
-                statusErrorVoid
-            ])
-        }
-
         const forma = req.query.pagamento
 
         if(forma == 'A Vista Boleto'){

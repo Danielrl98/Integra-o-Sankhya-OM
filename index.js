@@ -1,54 +1,31 @@
-const http = require('http');
-const cors = require('cors')
-const express = require('express')
-const router = express()
 const fs = require('fs');
-router.use(cors())
 const https = require('https');
+var router = require('./src/Router/index.js');
 
 require('dotenv').config();
 
-const host = '10.0.2.168'; 
+const host = process.env.IP; 
 
-var app = require('./src/Router/index.js');
+if(process.env.ENVIRONMENT == 'PRODUCTION'){
 
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/universidade.sankhya.com.br/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/universidade.sankhya.com.br/cert.pem', 'utf8');
+    var options = {
+        key: fs.readFileSync('/etc/letsencrypt/live/universidade.sankhya.com.br-0001/privkey.pem','utf-8'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/universidade.sankhya.com.br-0001/cert.pem','utf-8')
+    };
+    
+    var httpsServer = https.createServer(options, router);
 
-const credentials = { key: privateKey, cert: certificate };
-
-// Crie um servidor HTTPS
-
-
-router.get('/teste2',(req,res) => {
-	res.send({teste:'teste2'})
-})
-https.createServer(credentials, app).listen('3030',host, function () {
+    httpsServer.listen('3020', function () {
+        console.log(`http://${host}:3020`);
+    });
+    
+} 
+router.listen('3030', function () {
     console.log(`http://${host}:3030`);
 });
 
 
-/*const server = http.createServer((req,res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
 
-    const data = {
-        teste:'teste'
-    }
-    res.end(JSON.stringify(data))
-});
-
-const port = 3000; */
-
-/*const host = '3.228.59.191'*/
-
-
-/*server.listen(port, host, () => {
-    console.log(`Servidor está ouvindo em http://{$host}:${port}/`);
-});*/
-  
 
 
 
