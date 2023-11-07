@@ -9,8 +9,8 @@ const host = process.env.IP;
 if(process.env.ENVIRONMENT == 'PRODUCTION'){
 
     var options = {
-        key: fs.readFileSync('/etc/letsencrypt/live/universidade.sankhya.com.br-0001/privkey.pem','utf-8'),
-        cert: fs.readFileSync('/etc/letsencrypt/live/universidade.sankhya.com.br-0001/cert.pem','utf-8')
+        key: fs.readFileSync('/','utf-8'),
+        cert: fs.readFileSync('/','utf-8')
     };
     
     var httpsServer = https.createServer(options, router);
