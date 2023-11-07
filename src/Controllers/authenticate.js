@@ -3,7 +3,7 @@ const { dados } = require('./variaveis')
 module.exports = {
 
     async authenticate(){
-        try {
+      /*  try {*/
     
             const url = 'https://api.sankhya.com.br/login'
         
@@ -27,24 +27,26 @@ module.exports = {
         
             const status = result.status;
         
-            const success = await result.json();
-        
-            if (status.toString() !== '200') {
-               /* return res.send({ error: success })*/
-            }
-          
-            dados.push(
+            if (status.toString() == '200') {
+
+                const success = await result.json();
+               dados.push(
                 { bearerToken: success.bearerToken }
             )   
-        }
+            } else {
+                console.log(result)
+            }
+          
+           
+       /* }
         catch(e){
             const error =  [
                 {authenticacao:e},
                 status404
             ]
-            return json.stringify(error)
+            return JSON.stringify(error)
        
-        }
+        }*/
     }
 
 }
