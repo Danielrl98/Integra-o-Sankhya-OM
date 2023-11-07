@@ -42,8 +42,8 @@ module.exports = {
                 {authenticacao:e},
                 status404
             ]
-        console.log(error)
-        res.send(error)
+            return json.stringify(error)
+       
         }
     }
 
