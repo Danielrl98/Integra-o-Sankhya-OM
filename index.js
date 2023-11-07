@@ -2,22 +2,36 @@ const http = require('http');
 const cors = require('cors')
 const express = require('express')
 const router = express()
+const fs = require('fs');
 router.use(cors())
-router.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+const https = require('https');
+
 require('dotenv').config();
 
-/*var app = require('./src/Router/index.js');
+const host = '10.0.2.168'; 
 
-app.listen('3030', function () {
-    console.log('http://localhost:3030');
-});*/
+var app = require('./src/Router/index.js');
+
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/universidade.sankhya.com.br/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/universidade.sankhya.com.br/cert.pem', 'utf8');
+
+const credentials = { key: privateKey, cert: certificate };
+
+// Crie um servidor HTTPS
 
 
-const server = http.createServer((req,res) => {
+router.get('/teste2',(req,res) => {
+	res.send({teste:'teste2'})
+})
+https.createServer(credentials, app).listen('3030',host, function () {
+    console.log(`http://${host}:3030`);
+});
+
+
+/*const server = http.createServer((req,res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
     res.writeHead(200, { 'Content-Type': 'text/plain' });
 
     const data = {
@@ -25,14 +39,15 @@ const server = http.createServer((req,res) => {
     }
     res.end(JSON.stringify(data))
 });
-  
-const port = 3000; 
-/*const host = '192.168.1.3'; */
-const host = '3.228.59.191'
-  
-server.listen(port, host, () => {
+
+const port = 3000; */
+
+/*const host = '3.228.59.191'*/
+
+
+/*server.listen(port, host, () => {
     console.log(`Servidor está ouvindo em http://{$host}:${port}/`);
-});
+});*/
   
 
 
